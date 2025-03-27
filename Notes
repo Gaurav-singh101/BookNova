@@ -1,0 +1,20 @@
+Run backend - nodemon app.js
+1. Start with backend part . 
+set up - 
+Create App.js
+npm init -y
+npm i express mongoose
+go to app.js and set up 
+create port and all 
+
+npm i dotenv
+create dotenv file
+
+2. Make connetion file
+connetion with mongodb atles 
+
+3. Create table (ex - user.js) all table create 
+
+4. Start with routes folder and create all route (ex - user.js)
+
+
