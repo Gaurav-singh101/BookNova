@@ -18,3 +18,43 @@ connetion with mongodb atles
 4. Start with routes folder and create all route (ex - user.js)
 
 
+Routes - 
+
+Sign up - localhost:1000/api/v1/sign-up
+
+Sign in - localhost:1000/api/v1/sign-in
+
+For admin - 
+{
+  "username": "Anshika",
+  "email": "gaurav74580@gmail.com",
+  "password": "123456789",
+  "address": "In Gaurav Heart"
+}
+
+{
+  "username": "Gaurav",
+  "email": "gauravsingh74580@gmail.com",
+  "password": "123456789",
+  "address": "In Anshika Heart"
+}
+
+
+
+
+
+
+
+
+
+Set Up for FRONTEND - 
+
+1. Set with ReactVite with TailwindCSS . 
+
+2. npm i react-router-dom  - Without Loading the website , change the pages
+
+3. npm i axios  - Used to api end point 
+
+4. npm i "@reduxjs/toolkit" react-redux - Used for state
+
+5. npm i react-icons
