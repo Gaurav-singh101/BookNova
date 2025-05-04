@@ -2,7 +2,7 @@ const router = require("express").Router();
 const User = require("../models/user") ;
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const Book = require("../models/book")
+const Book = require("../models/book");
 const {authenticateToken} = require("./userAuth");
 
 // add - book 
