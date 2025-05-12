@@ -16,11 +16,11 @@ router.post("/place-order" , authenticateToken , async (req , res ) => {
             const newOrder = new Order({user : id , book: orderData._id });
             const orderDataFromDb = await newOrder.save() ; 
 
-            await User.findByIdUpdate(id , {
+            await User.findByIdAndUpdate(id , {
                 $push : { orders : orderDataFromDb._id } , 
             });
 
-            await User.findByIdUpdate(id , {
+            await User.findByIdAndUpdate(id , {
                 $pull :{ cart : orderData._id } ,
             });
         }
@@ -88,7 +88,7 @@ router.get("/get-all-orders" , authenticateToken , async (req , res ) => {
 router.put("/update-status/:id" , authenticateToken , async (req , res ) => {
     try{
         const { id } = req.params ; 
-        await Order.findByIdUpdate(id , { status : req.body.status });
+        await Order.findByIdAndUpdate(id , { status : req.body.status });
         return res.json({
             status : "Success" , 
             message : "Status Updated uccessfully " , 

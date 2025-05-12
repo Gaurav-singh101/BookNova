@@ -35,7 +35,7 @@ const BookCard = ({data , favourite}) => {
       </Link>
 
       {favourite && (
-          <button className='bg-yellow-50 , px-4 py-2 rounded border border-yellow-500 text-yellow-500 mt-4' 
+          <button className='bg-yellow-50  px-4 py-2 rounded border border-yellow-500 text-yellow-500 mt-4' 
             onClick={handleRemoveBook}>
               Remove from Favourite
           </button>

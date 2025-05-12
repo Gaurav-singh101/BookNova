@@ -1,7 +1,7 @@
 import React, { useEffect , useState } from 'react' ;
 import axios from "axios" ; 
 import Loader  from "../Loader/Loader";
-import { useParams  } from 'react-router-dom';
+import { Link , useNavigate, useParams  } from 'react-router-dom';
 import { GrLanguage } from "react-icons/gr";
 import { FaHeart } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
@@ -12,6 +12,7 @@ import { MdDelete } from "react-icons/md";
 
 const ViewBookDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const[Data , setData] = useState() ;
   const isLoggedIn =  useSelector((state) => state.auth.isLoggedIn);
   const role =  useSelector((state) => state.auth.role);
@@ -47,6 +48,36 @@ const ViewBookDetails = () => {
     alert(response.data.message);
   };
 
+
+  // const DeleteBook = async () => {
+  //   const response = await axios.delete("http://localhost:1000/api/v1/delete-book" , {} ,
+  //     {headers}
+  //   );
+  //   alert(response.data.message);
+  //   navigate("/all-books");
+  // };
+
+
+  const DeleteBook = async () => {
+  try {
+    const response = await axios.delete("http://localhost:1000/api/v1/delete-book", {
+      headers: {
+        id: localStorage.getItem("id"),
+        authorization: `Bearer ${localStorage.getItem("token")}`,
+        bookid: id, 
+      },
+    });
+    alert(response.data.message);
+    navigate("/all-books");
+  } catch (err) {
+    console.error(err);
+    alert("Failed to delete book.");
+  }
+};
+
+
+
+
   return (
     <>
       {Data &&  (
@@ -74,13 +105,17 @@ const ViewBookDetails = () => {
               )}
               {isLoggedIn === true && role === "admin" && (
                   <div className='flex flex-col md:flex-row lg:flex-col items-center justify-between lg:justify-start mt-4 lg:mt-0'>
-                    <button className='bg-white rounded lg:rounded-full text-4xl lg:text-3xl p-3 flex items-center justify-center'>
+                    <Link 
+                    to={`/updateBook/${id}`}
+                    className='bg-white rounded lg:rounded-full text-4xl lg:text-3xl p-3 flex items-center justify-center'>
                     <FaEdit />
-                    <spam className="ms-4 block lg:hidden">Edit Book</spam>
-                    </button>
-                    <button className='text-red-500 rounded lg:rounded-full text-3xl p-3 mt-8 md:mt-0 lg:mt-8 bg-white flex items-center justify-center'>
+                    <span className="ms-4 block lg:hidden">Edit Book</span>
+                    </Link>
+                    <button className='text-red-500 rounded lg:rounded-full text-4xl lg:text-3xl p-3 mt-8 md:mt-0 lg:mt-8 bg-white flex items-center justify-center' 
+                    onClick={DeleteBook}
+                    >
                     <MdDelete />
-                    <spam className="ms-4 block lg:hidden">Delete Book</spam>
+                    <span className="ms-4 block lg:hidden">Delete Book</span>
                     </button>
                   </div>
               )}

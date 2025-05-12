@@ -14,6 +14,9 @@ import { useDispatch ,  useSelector } from 'react-redux';
 import Favourite from './components/Profile/Favourite';
 import UserOrderHistory from './components/Profile/UserOrderHistory';
 import Settings from './components/Profile/Settings';
+import AllOrders from './pages/AllOrders';
+import AddBook from './pages/AddBook';
+import UpdateBook from './pages/UpdateBook';
 
 
 
@@ -38,12 +41,20 @@ const App = () => {
         <Route  path="/All-books" element={<AllBooks/>} />
         <Route  path="/Cart" element={<Cart/>} />
         <Route  path="/Profile" element={<Profile/>} >
-          <Route index element={<Favourite/>}/>
+
+          {role === "user" ? 
+          <Route index element={<Favourite/>}/> :  
+          <Route index element={<AllOrders />} />
+          }
+
+        {role === "admin" &&  <Route path="/Profile/add-book" element={<AddBook/>}/>}
+
           <Route path="orderHistory" element={<UserOrderHistory/>}/>
           <Route path="settings" element={<Settings/>}/>
         </Route>
         <Route  path="/SignUp" element={<SignUp/>} />
         <Route  path="/LogIn" element={<LogIn/>} />
+        <Route  path="/updateBook/:id" element={<UpdateBook/>} />
         <Route  path="/view-book-details/:id" element={<ViewBookDetails />} />
        </Routes>
        <Footer/>
