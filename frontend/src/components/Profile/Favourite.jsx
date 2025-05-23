@@ -12,7 +12,7 @@ const Favourite = () => {
 
   useEffect(() => {
     const fetch = async () => {
-      const response = await axios.get("http://localhost:1000/api/v1/get-favourite-books" ,
+      const response = await axios.get("https://booknova-backend.onrender.com/api/v1/get-favourite-books" ,
         {headers}
       );
       setFavouriteBooks(response.data.data);
