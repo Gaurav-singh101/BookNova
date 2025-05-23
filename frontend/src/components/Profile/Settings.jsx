@@ -18,7 +18,7 @@ const Setting = () => {
   useEffect(() => {
     const fetch = async () => {
       const response = await axios.get(
-        "http://localhost:1000/api/v1/get-user-information" , 
+        "https://booknova-backend.onrender.com/api/v1/get-user-information" , 
         { headers }
       );
       setProfileData(response.data);
@@ -28,7 +28,7 @@ const Setting = () => {
   }, []);
 
   const submitAddress = async () => {
-    const response = await axios.put("http://localhost:1000/api/v1/update-address" ,
+    const response = await axios.put("https://booknova-backend.onrender.com/api/v1/update-address" ,
       Value ,
       { headers}
     );
