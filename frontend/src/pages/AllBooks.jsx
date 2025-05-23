@@ -8,7 +8,7 @@ const AllBooks = () => {
   useEffect(() => {
       const fetch = async () => {
       const response =  await axios.get(
-          "http://localhost:1000/api/v1/get-all-books"
+          "https://booknova-backend.onrender.com/api/v1/get-all-books"
       );
       setData(response.data.data);
     };
