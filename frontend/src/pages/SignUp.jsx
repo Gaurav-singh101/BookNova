@@ -25,7 +25,7 @@ const SignUp = () => {
         alert("Please fill all fields") ;
       }else{
         const response = await axios.post(
-          "http://localhost:1000/api/v1/sign-up" , 
+          "https://booknova-backend.onrender.com/api/v1/sign-up" , 
           Values
         );
         alert(response.data.message);
