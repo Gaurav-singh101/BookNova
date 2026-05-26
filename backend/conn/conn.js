@@ -1,13 +1,7 @@
-const mongoose = require("mongoose");
+// MongoDB connection file - NO LONGER NEEDED
+// This file has been replaced with Firebase Firestore connection in firebase.js
+// 
+// The application now uses Firebase Firestore for all database operations.
+// See firebase.js for the Firestore configuration.
 
-const conn = async () => {
-    try {
-        await mongoose.connect(process.env.URI, {
-        });
-        console.log("✅ Connected to Database");
-    } catch (error) {
-        console.error("❌ MongoDB Connection Error:", error);
-    }
-};
-
-conn();
+console.log("ℹ️  Note: MongoDB connection removed. Using Firebase Firestore instead.");

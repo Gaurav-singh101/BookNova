@@ -26,7 +26,7 @@ const ViewBookDetails = () => {
       setData(response.data.data);
     };
     fetch();
-  } , []);
+  } , [id]);
 
   const headers = {
     id: localStorage.getItem("id") ,

@@ -2,7 +2,9 @@ const express = require("express");
 const app = express();
 const cors = require("cors") ;
 require("dotenv").config(); 
-require("./conn/conn"); 
+
+// Initialize Firebase Firestore 
+const db = require("./firebase");
 
 const User = require("./routes/user");
 const Books = require("./routes/book");

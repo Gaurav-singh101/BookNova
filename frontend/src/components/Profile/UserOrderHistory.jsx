@@ -74,7 +74,7 @@ const UserOrderHistory = () => {
           </div>
           <div className="w-[22%]">
             <Link 
-              to={`/view-book-details/${items.book._id}`}
+              to={`/view-book-details/${items.book.id}`}
               className="hover:text-blue-300"
             >
               {items.book.title}

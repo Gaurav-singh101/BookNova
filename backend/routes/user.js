@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const User = require("../models/user") ;
+const userService = require("../services/userService");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const {authenticateToken} = require("./userAuth");
@@ -19,13 +19,13 @@ router.post("/sign-up" , async(req , res) => {
 
         // Check username already exits ? 
 
-        const existingUsername = await User.findOne({ username : username });
-        if (existingUsername) {
+        const usernameUnique = await userService.isUsernameUnique(username);
+        if (!usernameUnique) {
             return res.status(400).json({ message: "Username already exists" });
         }
         
-        const existingEmail = await User.findOne({ email: email });
-        if (existingEmail) {
+        const emailUnique = await userService.isEmailUnique(email);
+        if (!emailUnique) {
             return res.status(400).json({ message: "Email already exists" });
         }
         
@@ -41,17 +41,17 @@ router.post("/sign-up" , async(req , res) => {
 
         const hashPass = await bcrypt.hash(password , 10); 
 
-
-        const newUser = new User({
-            username:username ,
-            email:email , 
-            password: hashPass, 
-            address: address,
+        const userId = await userService.createUser({
+            username,
+            email,
+            password: hashPass,
+            address,
         });
-        await newUser.save();
+
         return res.status(200).json({message: "SignUp Successfully"});
 
     } catch(error) {
+        console.error(error);
         res.status(500).json({message: "Internal server error"})
     }
 })
@@ -62,9 +62,9 @@ router.post("/sign-in" , async(req , res) => {
     try{
         const{username , password} = req.body ;
 
-        const existingUser = await  User.findOne({ username });
+        const existingUser = await userService.getUserByUsername(username);
         if(!existingUser){
-            res.status(400).json({message: "Invalid credentials"});
+            return res.status(400).json({message: "Invalid credentials"});
         }
 
         await bcrypt.compare(password , existingUser.password , (err , data) => {
@@ -77,12 +77,13 @@ router.post("/sign-in" , async(req , res) => {
                     expiresIn: "30d" , 
                 });
 
-                res.status(200).json({ id: existingUser._id , role: existingUser.role , token});   
+                res.status(200).json({ id: existingUser.id , role: existingUser.role , token});   
             }else{
                 res.status(400).json({message: "Invalid credentials"});   
             }
         });
     } catch(error) {
+        console.error(error);
         res.status(500).json({message: "Internal server error"})
     }
 })
@@ -93,9 +94,15 @@ router.post("/sign-in" , async(req , res) => {
 router.get("/get-user-information" , authenticateToken , async(req , res) => {
     try{
         const {id} = req.headers;
-        const data = await User.findById(id).select('-password');
+        const data = await userService.getUserByIdWithoutPassword(id);
+        
+        if (!data) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        
         return res.status(200).json(data);
     } catch(error){
+        console.error(error);
         res.status(500).json({message : "Internal server error"});
     }
 });
@@ -107,10 +114,12 @@ router.put("/update-address" , authenticateToken , async(req , res) => {
     try{
         const {id} = req.headers;
         const {address} = req.body ;
-        await User.findByIdAndUpdate(id , {address: address});
+        
+        await userService.updateUserAddress(id, address);
         return res.status(200).json({message : "Adress updated successfully"}); 
 
     } catch(error){
+        console.error(error);
         res.status(500).json({message : "Internal server error"});
     }
 })

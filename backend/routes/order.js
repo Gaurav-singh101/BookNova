@@ -1,8 +1,7 @@
 const router = require("express").Router() ; 
-const { authenticateToken }  = require("./userAuth") ; 
-const Book = require("../models/book");
-const Order = require("../models/order");
-const User = require("../models/user");
+const { authenticateToken } = require("./userAuth") ; 
+const userService = require("../services/userService");
+const orderService = require("../services/orderService");
 
 // Place Order
 
@@ -13,16 +12,10 @@ router.post("/place-order" , authenticateToken , async (req , res ) => {
         const { order } = req.body ; 
 
         for(const orderData of order){
-            const newOrder = new Order({user : id , book: orderData._id });
-            const orderDataFromDb = await newOrder.save() ; 
+            const orderId = await orderService.createOrder(id, orderData._id || orderData.id);
 
-            await User.findByIdAndUpdate(id , {
-                $push : { orders : orderDataFromDb._id } , 
-            });
-
-            await User.findByIdAndUpdate(id , {
-                $pull :{ cart : orderData._id } ,
-            });
+            await userService.addOrder(id, orderId);
+            await userService.removeFromCart(id, orderData._id || orderData.id);
         }
 
         return res.json({
@@ -40,12 +33,8 @@ router.post("/place-order" , authenticateToken , async (req , res ) => {
 router.get("/get-order-history" , authenticateToken , async (req , res ) => {
     try{
         const {id} = req.headers ;  
-        const userData = await User.findById(id).populate({
-            path: "orders" , 
-            populate: {path : "book"},
-        }); 
+        const ordersData = await userService.getUserOrders(id);
 
-        const ordersData = userData.orders.reverse();
         return res.json({
             status: "Success" , 
             data: ordersData ,
@@ -62,14 +51,7 @@ router.get("/get-order-history" , authenticateToken , async (req , res ) => {
 
 router.get("/get-all-orders" , authenticateToken , async (req , res ) => {
     try{
-        const userData = await Order.find()
-            .populate({
-                path: "book" , 
-            })
-            .populate({
-                path: "user" ,
-            })
-            .sort({ createdAt: -1});
+        const userData = await orderService.getAllOrders();
 
         return res.json({
             status: "Success" , 
@@ -88,10 +70,11 @@ router.get("/get-all-orders" , authenticateToken , async (req , res ) => {
 router.put("/update-status/:id" , authenticateToken , async (req , res ) => {
     try{
         const { id } = req.params ; 
-        await Order.findByIdAndUpdate(id , { status : req.body.status });
+        await orderService.updateOrderStatus(id, req.body.status);
+        
         return res.json({
             status : "Success" , 
-            message : "Status Updated uccessfully " , 
+            message : "Status Updated Successfully" , 
         });
     } catch (error) {
         console.log(error) ; 
@@ -99,4 +82,4 @@ router.put("/update-status/:id" , authenticateToken , async (req , res ) => {
     }
 });
 
-module.exports = router ; 
+module.exports = router; 

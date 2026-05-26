@@ -40,7 +40,7 @@ const AllOrders = () => {
     };
 
     const submitChanges = async (i) => {
-        const id = AllOrders[i]._id;
+        const id = AllOrders[i].id;
         const response = await axios.put(
             `http://localhost:1000/api/v1/update-status/${id}` , 
             Values , 
@@ -96,7 +96,7 @@ const AllOrders = () => {
             </div>
             <div className="w-[40%] md:w-[22%]">
                 <Link 
-                to={`/view-book-details/${items.book._id}`}
+                to={`/view-book-details/${items.book.id}`}
                 className='hover:text-blue-300'
                 >
                     {items.book.title}

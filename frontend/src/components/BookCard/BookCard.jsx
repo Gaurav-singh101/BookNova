@@ -8,7 +8,7 @@ const BookCard = ({data , favourite}) => {
   const headers = {
     id: localStorage.getItem("id"),
     authorization: `Bearer ${localStorage.getItem("token")}` ,
-    bookid: data._id ,
+    bookid: data.id ,
   };
   const handleRemoveBook = async () => {
     const response = await axios.put(
@@ -21,7 +21,7 @@ const BookCard = ({data , favourite}) => {
 
   return (
     <div className='bg-zinc-800 rounded p-4 flex flex-col'>
-      <Link to={`/view-book-details/${data._id}`}>
+      <Link to={`/view-book-details/${data.id}`}>
         <div className=''>
           <div className="bg-zinc-900 rounded flex items-center justify-center">
             <img src= {data.url} alt="/"  className='h-[25vh]' />

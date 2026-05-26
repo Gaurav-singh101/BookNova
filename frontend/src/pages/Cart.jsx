@@ -113,7 +113,7 @@ const Cart = () => {
             </h2>
             <button
               className='bg-red-100 text-red-700 border border-red-700 rounded p-2 ms-12'
-              onClick={() => deleteItem(items._id)}>
+              onClick={() => deleteItem(items.id)}>
                 <AiFillDelete />
               </button>
           </div>

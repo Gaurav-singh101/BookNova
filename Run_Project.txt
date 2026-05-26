@@ -1,0 +1,11 @@
+PS C:\Users\hp\Desktop\desktop\Project\BookNova> cd .\frontend\
+PS C:\Users\hp\Desktop\desktop\Project\BookNova\frontend> npm run dev
+
+
+PS C:\Users\hp\Desktop\desktop\Project\BookNova\backend> npm start
+
+
+
+Username  Gaurav
+Email  gauravsingh74580@gmail.com
+Password  123456789
